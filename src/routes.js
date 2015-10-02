@@ -17,7 +17,18 @@ const router = new Router(on => {
     return component && <App context={state.context}>{component}</App>;
   });
 
-  on('/contact', async () => <ContactPage />);
+  on('/configs/:id', async (state) => {
+    let path = '';
+    if (state.query)
+      {
+        path = state.query.path;
+        const content = await http.get(`/api/content/gmx/?path=${path}`);
+
+        return <p>{JSON.stringify(content)}</p>;
+        //return content;
+      }
+    return <div><ContactPage />${JSON.stringify(state)}</div>
+});
 
   on('/login', async () => <LoginPage />);
 
